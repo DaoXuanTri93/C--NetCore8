@@ -1,10 +1,12 @@
 ﻿using FINSHARK.Data;
 using FINSHARK.Dtos.Stock;
+using FINSHARK.Helper;
 using FINSHARK.Interfaces;
 using FINSHARK.Mappers;
 using FINSHARK.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace FINSHARK.Controllers
 {
@@ -12,33 +14,43 @@ namespace FINSHARK.Controllers
     [ApiController]
     public class FinSharkController : ControllerBase
     {
-        private readonly ApplicationDBContext _dbContext;
         private readonly IStock _repo;
 
-        public FinSharkController(ApplicationDBContext dBContetxt, IStock repo)
+        public FinSharkController(IStock repo)
         {
-            _dbContext = dBContetxt;
             _repo = repo;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllStock()
+        public async Task<IActionResult> GetAllStock([FromQuery] QueryObject query)
         {
-            var stockModel = await _repo.GetAllStock();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var stockModel = await _repo.GetAllStock(query);
             var stockDTO = stockModel.Select(s => s.ToStockDTO());
             return Ok(stockDTO);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetStockById(int id)
         {
+            var stockModel = await _repo.GetStockById(id);
+            if (stockModel == null) {
+                return BadRequest("Stock does not exist");
+            }
 
-            return Ok(await _repo.GetStockById(id));
+            return Ok(stockModel);
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateStock(CreateStockDTO createStockDTO)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var createModel = createStockDTO.ToStockModel();
 
             await _repo.CreateStock(createModel);

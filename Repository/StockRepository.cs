@@ -1,5 +1,6 @@
 ﻿using FINSHARK.Data;
 using FINSHARK.Dtos.Stock;
+using FINSHARK.Helper;
 using FINSHARK.Interfaces;
 using FINSHARK.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -19,13 +20,7 @@ namespace FINSHARK.Repository
         public async Task<bool> CheckExists(int id)
 
         {
-            var stockModel = await _context.Stock.FirstOrDefaultAsync(s => s.Id == id);
-            if (stockModel == null)
-            {
-                return false;
-            }
-
-            return true;
+            return await _context.Stock.AnyAsync(x => x.Id == id);
         }
 
         public async Task<Stock> CreateStock(Stock stockModel)
@@ -49,9 +44,38 @@ namespace FINSHARK.Repository
 
         }
 
-        public async Task<List<Stock>> GetAllStock()
+        public async Task<List<Stock>> GetAllStock(QueryObject query)
         {
-            return await _context.Stock.Include(s => s.Comments).ToListAsync();
+
+            var stock = _context.Stock.Include(s => s.Comments).AsQueryable(); ;
+            if (!string.IsNullOrWhiteSpace(query.CompanyName))
+            {
+                stock = stock.Where(s => s.CompanyName.Contains(query.CompanyName));
+            }
+            if (!string.IsNullOrEmpty(query.Purchase.ToString()))
+            {
+                stock = stock.Where(s => s.Purchase.ToString().Contains(query.Purchase.ToString()!));
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.SortBy))
+            {
+                if (query.SortBy.Equals("CompanyName", StringComparison.OrdinalIgnoreCase))
+                {
+                    stock = query.IsDecsending ? stock.OrderByDescending(s => s.CompanyName) : stock.OrderBy(s => s.CompanyName);
+                }
+
+                if (query.SortBy.Equals("MarketCap", StringComparison.OrdinalIgnoreCase))
+                {
+                    stock = query.IsDecsending ? stock.OrderByDescending(s => s.MarketCap) : stock.OrderBy(s => s.MarketCap);
+                }
+            }
+            // number 1 và size 2
+            var skipNumber = (query.PageNumber - 1) * query.PageSize;
+            
+
+            return await stock.Skip(skipNumber).Take(query.PageSize).ToListAsync();
+
+
         }
 
         public async Task<Stock?> GetStockById(int id)

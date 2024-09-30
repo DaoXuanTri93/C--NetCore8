@@ -138,3 +138,11 @@ D:\C#-SqlSever\FINSHARK\FINSHARK\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch
 D:\C#-SqlSever\FINSHARK\FINSHARK\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 D:\C#-SqlSever\FINSHARK\FINSHARK\bin\Debug\net8.0\Newtonsoft.Json.dll
 D:\C#-SqlSever\FINSHARK\FINSHARK\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
+D:\C#-SqlSever\FINSHARK\FINSHARK\obj\Debug\net8.0\FINSHARK.sourcelink.json
+D:\C#-SqlSever\FINSHARK\FINSHARK\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\C#-SqlSever\FINSHARK\FINSHARK\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+D:\C#-SqlSever\FINSHARK\FINSHARK\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+D:\C#-SqlSever\FINSHARK\FINSHARK\bin\Debug\net8.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+D:\C#-SqlSever\FINSHARK\FINSHARK\bin\Debug\net8.0\Microsoft.Extensions.Identity.Core.dll
+D:\C#-SqlSever\FINSHARK\FINSHARK\bin\Debug\net8.0\Microsoft.Extensions.Identity.Stores.dll
+D:\C#-SqlSever\FINSHARK\FINSHARK\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
